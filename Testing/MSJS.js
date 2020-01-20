@@ -23,6 +23,10 @@ let totalWinsNum = 0;
 
 let statusText;
 let rectLeftText;
+let totalSquares; 
+
+let bombInputSlider;
+let bombInputP;
 
 function setup(){
 	createCanvas(800,400);
@@ -31,7 +35,11 @@ function setup(){
 	statusText = createP("Status: ");
 	totalPlays = createP("Plays: 0");
 	totalWins = createP("Wins: 0");
-	rectLeftText = createP("Rect left: ");
+	rectLeftText = createP("Sqaures left: ");
+	totalSquares = createP("Total Squares: ");
+
+	bombInputSlider = createSlider(0,100,15,1);
+	bombInputP = createP("Bombs: " + bombsPercentage + "%");
 
 	reset();
 }
@@ -53,16 +61,27 @@ function reset(){
 	row = floor(height/rez);
 	hasLost = false;
 	hasWon = false;
+	bombsPercentage = bombInputSlider.value();
 	bombs = floor(col*row*bombsPercentage/100);
 	squaresPressed = 0;
 	setupSquares();
 	setupBombs();
 	setupNumbers();
 	rectLeftText.html("Rect left: " + (squares.length-bombs-squaresPressed));
+	totalSquares.html("Totalt amount of squares: " + squares.length);
+}
+
+function sliderMoved(){
+	bombsPercentage = bombInputSlider.value();
+	bombInputP.html("Bombs: " + bombsPercentage + "%");
 }
 
 function draw(){
 	background(100);
+
+	bombInputSlider.mouseReleased(sliderMoved);
+	bombInputSlider.mouseMoved(sliderMoved);
+
 	for (let i = 0; i < squares.length; i++){
 		squares[i].show();
 	}
